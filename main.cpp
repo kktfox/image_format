@@ -60,7 +60,7 @@ int main() {
     }
 
     // 2. 读取原始图片
-    std::string imgPath = "image/DSC_0822.JPG"; // 请修改为你的图片路径
+    std::string imgPath = "image/DSC_0207.JPG"; // 请修改为你的图片路径
     cv::Mat bgr = cv::imread(imgPath);
     if (bgr.empty()) {
         std::cerr << "错误：无法读取图片 " << imgPath << std::endl;
@@ -152,6 +152,8 @@ int main() {
     // 也就是我们只“看到”了内存的前一半，且每一行的步长(step)都错了
     cv::Mat wrong_format_mat(h, w, CV_8UC1, rawData.data());
 
+    cv::imwrite(outDir + "/result_wrong_format.png", wrong_format_mat);
+
     // 2. 施加裁切框
     // 这里的 roi_odd (1001, 1001, 1001, 1001)
     // 对于 CV_8UC1 来说，x=1001 意味着向后偏移 1001 个字节
@@ -164,7 +166,7 @@ int main() {
     cv::Mat crop_wrong_copy = crop_wrong.clone();
 
     // 4. 保存结果
-    std::string path_garbage = outDir + "/result_wrong_format_garbage.jpg";
+    std::string path_garbage = outDir + "/result_wrong_format_garbage.png";
     cv::imwrite(path_garbage, crop_wrong_copy);
     
     std::cout << "错误格式图片已保存: " << path_garbage << std::endl;
@@ -176,7 +178,6 @@ int main() {
     // 原图一行有 w 个像素，占 2w 个字节。
     // wrong_format_mat 认为一行只有 w 个字节。
     // 结果：原图的 "第1行" 数据，被 wrong_format_mat 拆成了 "第1行" 和 "第2行"。
-    // 图像看起来会被压扁，且右半部分接在左半部分下面，完全乱套。
-
+    // 图像看起来会被压扁，且右半部分接在左半部分下面，完全乱
     return 0;
 }

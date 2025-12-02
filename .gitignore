@@ -20,3 +20,5 @@ Makefile
 .vscode/
 .idea/
 .trae/
+
+output/*
